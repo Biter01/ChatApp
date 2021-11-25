@@ -24,7 +24,7 @@ form.addEventListener('submit', async (event)=> {
     if(result.status === 'ok') {
         console.log('Got the token ', result.data);
         localStorage.setItem('token', result.data);
-        window.location.replace('http://localhost:5000/chat.html');
+        window.location.href='http://localhost:5000/chat.html';
     } else {
         displayErrorMessage(result);
         console.log(result.message);
