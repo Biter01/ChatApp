@@ -1,8 +1,8 @@
 const express = require('express');
 const app = express();
-const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const User = require('./models/user.js')
+const HistoryUser = require('./models/historyUsers.js');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const checkPermission = require('./middleware/checkPermission');
@@ -30,7 +30,7 @@ app.set('views', './views');
 //Suse static files
 app.use(express.static(__dirname + '/public'));
 //parses json body -> payload in order to read it -> req.body
-app.use(bodyParser.json());
+app.use(express.json());
 
 
 
@@ -62,7 +62,17 @@ app.post('/api/register', async (req, res) => {
             throw error;
         }
     }
+
     res.json({status: 'ok', message: 'Scuessfully registered'});
+
+
+    const history = await HistoryUser.create({
+        username: username,
+        history: ''
+    });
+    console.log(history);
+
+    
 });
 
 
@@ -114,18 +124,18 @@ app.get('/chat/:user',(req, res)=> {
 
 
 app.post('/api/chat/room', checkPermission, async (req, res)=> {
-    const {userInputRoom} = req.body;
+    const {userRoom} = req.body;
     //Schaut in der Datenbank nach ob es zu diesen Raum einen User gibt
-    const room = await User.findOne({username: userInputRoom});
+    const room = await User.findOne({username: userRoom});
     const user = req.username;
-    console.log(user, room)
+    //console.log(user, room)
     //Wenn der Userroom nicht exestiert also es gibt keinen Namen mit diesen User in der Datenbank
     if(!room) {
        return res.json({status: 'error', message: 'Username does not exist'});
     }
     // Wenn der User nicht mit dem Raum übereinstimmt und ein User zum chatten exestiert
     if(user !== room.username && user) {
-        return res.json({status: 'ok', message: 'Everything is alright'});
+        return res.json({status: 'ok', message: 'Everything is alright', user: user});
     }
     //Wenn der Raum  mit dem User übereinstimmt
     else if(user === room.username) {
@@ -139,14 +149,32 @@ app.post('/api/chat/room', checkPermission, async (req, res)=> {
 
 io.on('connection', (socket)=> {
     console.log('a user connected');
-    socket.on('chat-message', (msg)=> {
+
+    socket.on('user-join', (user)=> {
+        const {userRoom, userName} = user;
+        const room = `${userRoom}-${userName}`;
+        socket.join(room);
+        //socket.broadcast.emit('send-message-joined', user);
+    });
+
+    socket.on('chat-message', (msgObj)=> {
+        const {userRoom, userName, message} = msgObj;
         console.log('server chat message');
-        io.emit('send-message', msg)
+        //schickt nachrict an alle Clients außer an sich selbst
+        socket.broadcast.to(`${userName}-${userRoom}`).emit('send-message', msgObj);
+    });
+
+    socket.on('sava-history', (user)=> {
+
+    });
+
+
+    socket.on('disconnect', ()=> {
+    //    await HistoryUser.create({
+    //     })
     });
 
 });
-
-
 
 server.listen(5000, ()=> {
     console.log('Server Listening Port 5000');

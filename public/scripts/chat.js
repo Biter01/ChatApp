@@ -81,7 +81,7 @@ function createSearchedUsers(users) {
         const listItem = document.createElement('li');
         const link = document.createElement('a');
         link.innerHTML = username;
-        link.href = `/chat/${username}`;
+        link.href = `/chat/${username}/`;
         listItem.appendChild(link); 
         list.appendChild(listItem);
     });
