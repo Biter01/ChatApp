@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const User = require('./models/user.js')
-const HistoryUser = require('./models/historyUsers.js');
+//const HistoryUser = require('./models/historyUsers.js');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const checkPermission = require('./middleware/checkPermission');
@@ -49,10 +49,14 @@ app.post('/api/register', async (req, res) => {
     const password = await bcrypt.hash(passwordString, 10);
     //console.log(password);
     try {
+        // console.log('Before create User')
         const response = await User.create({
             username: username,
-            password: password
+            password: password,
+            chatrooms: []
         });
+
+        // console.log('After create User');
         //console.log(response)
         
      } catch (error) {
@@ -65,14 +69,6 @@ app.post('/api/register', async (req, res) => {
 
     res.json({status: 'ok', message: 'Scuessfully registered'});
 
-
-    const history = await HistoryUser.create({
-        username: username,
-        history: ''
-    });
-    console.log(history);
-
-    
 });
 
 
@@ -126,55 +122,144 @@ app.get('/chat/:user',(req, res)=> {
 app.post('/api/chat/room', checkPermission, async (req, res)=> {
     const {userRoom} = req.body;
     //Schaut in der Datenbank nach ob es zu diesen Raum einen User gibt
-    const room = await User.findOne({username: userRoom});
-    const user = req.username;
-    //console.log(user, room)
+    const roomObj = await User.findOne({username: userRoom});
+    const username = req.username;
+        //console.log(user, room)
     //Wenn der Userroom nicht exestiert also es gibt keinen Namen mit diesen User in der Datenbank
-    if(!room) {
+    if(!roomObj) {
        return res.json({status: 'error', message: 'Username does not exist'});
     }
     // Wenn der User nicht mit dem Raum übereinstimmt und ein User zum chatten exestiert
-    if(user !== room.username && user) {
-        return res.json({status: 'ok', message: 'Everything is alright', user: user});
+    if(username !== roomObj.username && username) {
+        res.json({status: 'ok', message: 'Everything is alright', username: username});
     }
     //Wenn der Raum  mit dem User übereinstimmt
-    else if(user === room.username) {
+    else if(username === roomObj.username) {
         res.json({status: 'error', message: 'You can not chat with yourself'});
     } else {
         res.json({status: 'error', message: 'ERROR!!!'});
     }
-    
 });
 
 
 io.on('connection', (socket)=> {
-    console.log('a user connected');
+    console.log('a user connected'); 
 
-    socket.on('user-join', (user)=> {
+    socket.on('user-join', async (user)=> {
         const {userRoom, userName} = user;
+        //Defeniere ein neues subdocument für den Sender, sofern es nicht exestiert
+        const userSender = await User.findOne({username: userName});
+        //console.log(user);
+        const chatRoomSender = userSender.chatrooms.find((element)=> {return element.roomname === userRoom});
+        if(!chatRoomSender) {
+            //Defeniere ein neues Sub document, den es exestiert für diesen User keines mit dem roomname userRoom!!!
+            console.log('newRoom-Sender');
+            
+            userSender.chatrooms.push({roomname: userRoom, history: []});
+            const updatedUser = await userSender.save();
+            //console.log(updatedUser);
+        }
+
+         //Defeniere ein neues subdocument für den Empfänger, sofern es nicht exestiert
+         const userRecipient = await User.findOne({username: userRoom});
+         const chatRoomRecipient = userRecipient.chatrooms.find((element)=> {return element.roomname === userName});
+
+         if(!chatRoomRecipient) {
+            //Defeniere ein neues Sub document, den es exestiert für diesen User keines mit dem roomname userName!!!
+            console.log('newRoom-Recipient');
+            userRecipient.chatrooms.push({roomname: userName, history: []});
+            const updatedUser = await userRecipient.save();
+            //console.log(updatedUser);
+        }
+        
         const room = `${userRoom}-${userName}`;
+
         socket.join(room);
-        //socket.broadcast.emit('send-message-joined', user);
     });
 
     socket.on('chat-message', (msgObj)=> {
+        //console.log(JSON.stringify(msgObj));
         const {userRoom, userName, message} = msgObj;
-        console.log('server chat message');
+            //console.log('server chat message');
         //schickt nachrict an alle Clients außer an sich selbst
-        socket.broadcast.to(`${userName}-${userRoom}`).emit('send-message', msgObj);
-    });
-
-    socket.on('sava-history', (user)=> {
-
+        socket.broadcast.to(`${userName}-${userRoom}`).emit('send-message', message);
     });
 
 
-    socket.on('disconnect', ()=> {
-    //    await HistoryUser.create({
-    //     })
+    socket.on('save-history', async (msgObj)=> {
+        const {userRoom, userName, message} = msgObj;
+
+         //Speicere neue Nachrichten in das jeweilge subdocument des *Senders*, welches den roomname userRoom trägt.
+        const userSender = await User.findOne({username: userName});
+       
+        const chatRoomSender = userSender.chatrooms.find((element)=> {return element.roomname === userRoom});
+        if(chatRoomSender) {
+            //console.log('updateRoom Sender');
+            //Wenn das subdocument für den Sender gefunden wurde speichere die neue Nachricht darin
+            chatRoomSender.history.push(`${userName}:${message}`);
+            const updatedSender = await userSender.save();
+            //console.log(updatedSender);
+        } else if(!chatRoomSender) {
+            //wenn kein subdocument für den User gefunden wurde werfe einen Fehler
+            throw Error;
+        }
+
+        //Speicere neue Nachrichten in das jeweilge subdocument des *Empfängers*, welches den roomname userName trägt.
+        const userRecipient = await User.findOne({username: userRoom});
+
+        const chatRoomRecipient = userRecipient.chatrooms.find((element)=> {return element.roomname === userName});
+        if(chatRoomRecipient) {
+            //console.log('updateRoom Recipient');
+            //Wenn das subdocument für den Empfaänger gefunden wurde speichere die neue Nachricht darin
+            chatRoomRecipient.history.push(`${userName}:${message}`);
+            const updatedRecipient = await userRecipient.save();
+            //console.log(updatedRecipient);
+        }  else if(!chatRoomRecipient) {
+            //wenn kein subdocument für den User gefunden wurde werfe einen Fehler
+            throw Error;
+        }
+
+
+    });
+
+    socket.on('disconnect',  (user)=> {
+        //console.log('user-disconnected')
     });
 
 });
+
+
+app.get('/api/chat/get-history', async (req, res)=> {
+    const {userName, userRoom} = req.query;
+    //Findet den User und greift auf dessen  ChatRoom zu, wo dann die history übergeben wird
+    const user = await User.findOne({username: userName});
+    const chatRoom = user.chatrooms.find((element)=>{return element.roomname === userRoom});
+    //console.log(chatRoom);
+    if(chatRoom) {
+        return res.json({status: 'ok', history: chatRoom.history});
+    } else {
+        res.json({status: 'error', message: 'chatRoom does not exist'})
+    }
+});
+
+
+app.delete('/api/chat/delete-history', async (req, res)=> {
+    //console.log(req.body);
+    const {userName, userRoom} = req.body;
+    //Findet den User und greift auf dessen  ChatRoom zu, wo dann die history gelöscht wird
+    const user = await User.findOne({username: userName});
+    const chatRoom = user.chatrooms.find((element)=>{return element.roomname === userRoom});
+    //console.log(user);
+    if(chatRoom) {
+        chatRoom.history = [];
+        await user.save();
+        return res.json({status: 'ok', message: 'History deleted'});
+    } else {
+        res.json({status: 'error', message: 'Cannot delete Room'});
+    }
+
+});
+
 
 server.listen(5000, ()=> {
     console.log('Server Listening Port 5000');
