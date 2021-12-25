@@ -1,55 +1,147 @@
 'use strict';
+const socket = io(); 
 
-const getUserToken = ()=> {
-    return localStorage.getItem('token');
+const userObj = {
+    userName: '',
+    getUserToken: ()=>{
+        return localStorage.getItem('token');
+    }
 }
 
-(async () => {
-    const result =  await fetch('/api/chat', {
+checkPermissionState();
+async function checkPermissionState() {
+    const result =  await fetch('/api/chat/checkPermission', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            token: getUserToken()    
+            token: userObj.getUserToken()    
         })
     }).then((response)=>{ 
        return response.json();
     });
     //console.log(result);
-    if(result.status === 'ok') {
-
+    if(displayPermissionState(result.status, result.message)) {
+        userObj.userName = result.userName;
+        return true;
     }
-    checkPermissionState(result.status, result.message);
-})();
+    
+}
 
-const searchForm = document.querySelector('form');
+//Damit der Wert von userName schon gesetzt wurde um ihn zu verwenden, sodass userName einen Wert hat!!!
+new Promise((resolve, reject) => {
+    const timer = setInterval(()=> {
+        if(userObj.userName!=='') {resolve(timer);}
+    }, 10);
+})
+.then((timer) => {
+    console.log(userObj.userName);
+    clearInterval(timer);
+    socket.emit('update-onlinestatus', userObj.userName);
+    socket.emit('connect-user', userObj.userName);
+});
+
+const contentElements = document.querySelectorAll('#content div')
+const navList = document.querySelector('nav ul');
+
+for(let i = 0; i < navList.children.length; i++ ) {
+        navList.children[i].addEventListener('click', function(event) {
+            const targetContent = document.getElementById(this.dataset.link);
+            if(targetContent.classList.contains('hide')) {
+                //console.log('contains hide');
+                targetContent.classList.remove('hide');
+            }
+            for(let j = 0; j < contentElements.length; j++ ) {
+                //console.log('add hide');
+                if(contentElements[j] !== targetContent) {
+                    contentElements[j].classList.add('hide')
+                }
+            }
+    });
+};
+
+
+
+const roomForm = document.querySelectorAll('form')[0];
+
+
+socket.on('update-userRooms', (rooms)=>{
+    console.log(rooms);
+    createSearchedRooms(rooms);
+    
+});
+
+function createSearchedRooms(rooms) {
+    const list = document.getElementById('rooms');
+    list.innerHTML = '';
+    rooms.forEach((room)=> {
+        const {roomname, unreadmessages} = room
+        const listItem = document.createElement('li');
+        const link = document.createElement('a');
+        const infoElement = document.createElement('span');
+        link.innerHTML = roomname;
+        link.href = `/chat/${roomname}/`;
+        infoElement.innerHTML = ` ${unreadmessages}`;
+        listItem.appendChild(link);
+        listItem.appendChild(infoElement) 
+        list.appendChild(listItem);
+    });
+
+}
+
+
+// roomForm.addEventListener('change', async (event)=> {
+    
+//     event.preventDefault();
+//     console.log('in Room Form');
+//     const searchedRoom = document.getElementById('search').value;
+//     const param = `?searchedRoom=${searchedRoom}&userName=${userObj.userName}`;
+//     const searchResult =  await fetch('/api/chat/search-room' + param, {
+//         method: 'GET',
+//         headers: {
+//             'Content-Type': 'application/json',
+//         }
+//     }).then((response)=>{
+//         //console.log(response);
+//         return response.json();
+//     }).catch((err)=> {
+//         console.log(err);
+//     });
+//     console.log('test');
+//     //console.log(searchResult);
+
+//     if(checkPermissionState()) {
+//         createSearchedUsers(searchResult.users);
+//     }
+// });
+
+
+const searchForm = document.querySelectorAll('form')[1];
 
 searchForm.addEventListener('submit', async (event)=> {
     event.preventDefault();
-    const username = document.getElementById('search').value;
-    const searchResult =  await fetch('/api/chat/search-user', {
-        method: 'POST',
+    const searchedUser = document.getElementById('searchInput').value;
+    const param = `?searchedUser=${searchedUser}&userName=${userObj.userName}`;
+    const searchResult =  await fetch('/api/chat/search-user' + param, {
+        method: 'GET',
         headers: {
             'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            username: username, 
-            token: getUserToken()
-        })
+        }
     }).then((response)=>{
         //console.log(response);
         return response.json();
     });
     //console.log(searchResult);
 
-    if(checkPermissionState(searchResult.status, searchResult.message)) {
+    if(checkPermissionState()) {
+        console.log(searchResult.users);
         createSearchedUsers(searchResult.users);
     }
 });
 
 
-function checkPermissionState(status, message) {
+function displayPermissionState(status, message) {
     const messageDiv = document.getElementById('message');
     console.log(status, message);
     if(status === 'ok' && message !== undefined) {

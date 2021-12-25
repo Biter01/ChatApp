@@ -5,16 +5,57 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>chat</title>
+    <script defer src="http://localhost:5000/socket.io/socket.io.js"></script> 
     <script defer src="./scripts/chat.js"></script>
+    <style>
+        .hide {
+            display: none;
+        }
+
+        .navigation ul li{
+            display: inline;
+        }
+
+        .navigation ul li:hover{
+            color: #b3b3b3;
+        }
+        
+        .navigation ul {
+            list-style-type: none;
+            margin: 0px;
+            padding: 0px;
+        }
+
+
+
+    </style>
 </head>
 <body>
     <button id="logout">Logout</button>
-    <h1>Chat</h1> 
     <div id="message"></div>
-    <form method="GET" id="search_form">
-        <input id="search" name="search" type="text" autocomplete="off" required>
-        <button type="submit">Search</button>
-    </form>
-    <ul id="user"></ul>
+    <h1>Chat</h1>
+    <nav id="navbar" class="navigation">
+        <ul>
+            <li data-link="roomsContent"><span>Rooms</span></li> 
+            <li data-link="userContent"><span>Explore</span></li>
+        </ul>
+    </nav>
+    <div id="content">
+        <div id="roomsContent">
+            <form method="GET" id="roomsForm">
+                <input id="roomsInput" name="search" type="text" autocomplete="off" required>
+            </form>
+
+            <ul id="rooms"></ul>
+        </div>
+
+        <div class="hide" id="userContent">
+            <form method="GET" id="searchForm">
+                <input id="searchInput" name="search" type="text" autocomplete="off" required>
+                <button type="submit">Search</button>
+            </form>
+            <ul id="user"></ul>
+        </div>
+    </div>
 </body>
 </html>

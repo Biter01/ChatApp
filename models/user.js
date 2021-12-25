@@ -5,6 +5,8 @@ const UserSchema = new mongoose.Schema({
     password: {type: String, required: true},
     chatrooms: [{
         roomname: {type: String},
+        onlinestatus: {type: Boolean},
+        unreadmessages: {type: Number}, 
         history: [String]
     }]
 }, {collection: 'users'});
