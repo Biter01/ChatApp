@@ -83,7 +83,8 @@ app.post('/api/login', async (req, res)=> {
  
     if(await bcrypt.compare(password, user.password)) {
         const token = jwt.sign({
-                id: user._id, username: user.username
+                //exp setze ein exp Date für Token
+                id: user._id, username: user.username, exp: Math.floor(Date.now() / 1000) + 3600 
             },
             JWT_SECRET
         );
@@ -112,10 +113,10 @@ app.post('/api/chat/search-user', checkPermission, async (req, res) => {
 });
 
 
-app.get('/chat/:user',(req, res)=> {
+app.get('/chat/:userRoom',(req, res)=> {
     //console.log('test')
-    const {user} = req.params;
-    res.sendFile(path.resolve(__dirname, './public/user.html'));
+    const {userRoom} = req.params;
+    res.sendFile(path.resolve(__dirname, './public/userRoom.html'));
 });
 
 
