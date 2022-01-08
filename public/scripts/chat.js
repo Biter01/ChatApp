@@ -16,7 +16,7 @@ const getUserToken = ()=> {
     }).then((response)=>{ 
        return response.json();
     });
-    //console.log(result);
+    console.log(result);
     if(result.status === 'ok') {
 
     }
