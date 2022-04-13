@@ -1,0 +1,342 @@
+body {
+   
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: #060c21;
+      overflow: hidden;
+       
+
+}
+
+
+.box {
+      position: relative;
+      width: 350px;
+      height: 550px;
+      align-items: center;
+      justify-content: center;
+      display: flex;
+       background: #060c21;
+       padding: auto;
+       text-align: center;
+      
+       border-radius: 10px;
+      
+}
+
+.box:before {
+      content:'';
+      position: absolute;
+      top: -2px;
+      right: -2px;
+      left: -2px;
+      bottom: -2px;
+      background: #00b4d8 ;
+     
+      border-radius: 10px;
+      z-index: -3;
+      
+     
+  }
+
+  input {
+        background-color: #060c21;
+        border-color: #48cae4;
+        border-radius: 20px;
+       padding-left: 10px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        color: #caf0f8;
+  }
+
+  
+  
+
+input {
+      margin-top: 20px;
+}
+
+button {
+      margin-top: 30px;
+      background-color: #060c21;
+      border-color: #00b4d8;
+      border-radius: 20px;
+      color: #00b4d8;
+      margin-bottom: 30px;
+      font-weight: bold;
+}
+
+h1 {
+      color: #00b4d8;
+     
+}
+
+button:hover {
+      color: white;
+      background-color: #00b4d8;
+      color: #060c21;
+}
+
+.login {
+      margin-top: 30px;
+}
+
+p {
+      color: grey;
+}
+
+#message {
+      color: white;
+}
+
+.link {
+      color:#00b4d8;
+}
+
+.link:hover {
+      color: #00b4d8 ;
+      font-weight: bold;
+      
+}
+
+
+#message {
+      color: #00b4d8;
+}
+
+@media only screen 
+  and (min-device-width: 250px) 
+  and (max-device-width: 480px)
+  and (-webkit-min-device-pixel-ratio: 2)
+  and (orientation: portrait) {
+
+      body {
+   
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #060c21;
+            overflow: hidden;
+             
+      
+      }
+      
+      
+      .box {
+            position: relative;
+            width: 250px;
+            height: 400px;
+            align-items: center;
+            justify-content: center;
+            display: flex;
+             background: #060c21;
+             padding: auto;
+             text-align: center;
+            
+             border-radius: 10px;
+            
+      }
+      
+      .box:before {
+            content:'';
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            left: -2px;
+            bottom: -2px;
+            background: #00b4d8 ;
+           
+            border-radius: 10px;
+            z-index: -3;
+            
+           
+        }
+      
+        input {
+              background-color: #060c21;
+              border-color: #48cae4;
+              border-radius: 20px;
+             padding-left: 2px;
+              padding-top: 1px;
+              padding-bottom: 1px;
+              color: #caf0f8;
+              width: 80px;
+              flex: 1;
+        }
+      
+        
+        
+      
+      input {
+            margin-top: 20px;
+      }
+      
+      button {
+            margin-top: 30px;
+            background-color: #060c21;
+            border-color: #00b4d8;
+            border-radius: 20px;
+            color: #00b4d8;
+            margin-bottom: 30px;
+            font-weight: bold;
+      }
+      
+      h1 {
+            color: #00b4d8;
+           
+      }
+      
+      button:hover {
+            color: white;
+            background-color: #00b4d8;
+            color: #060c21;
+      }
+      
+      .login {
+            margin-top: 30px;
+      }
+      
+      p {
+            color: grey;
+      }
+      
+      #message {
+            color: white;
+      }
+      
+      .link {
+            color:#00b4d8;
+      }
+      
+      .link:hover {
+            color: #00b4d8 ;
+            font-weight: bold;
+            
+      }
+
+}
+
+@media only screen 
+  and (max-device-width: 250px) {
+      body {
+   
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #060c21;
+            overflow: hidden;
+             
+      
+      }
+      
+      
+      .box {
+            position: relative;
+            width: 100px;
+            height: 350px;
+            align-items: center;
+            justify-content: center;
+            display: flex;
+             background: #060c21;
+             padding: auto;
+             text-align: center;
+            
+             border-radius: 10px;
+            
+      }
+      
+      .box:before {
+            content:'';
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            left: -2px;
+            bottom: -2px;
+            background: #00b4d8 ;
+           
+            border-radius: 10px;
+            z-index: -3;
+            
+           
+        }
+      
+        input {
+              background-color: #060c21;
+              border-color: #48cae4;
+              border-radius: 20px;
+             padding-left: 2px;
+              padding-top: 1px;
+              padding-bottom: 1px;
+              color: #caf0f8;
+              width: 80px;
+              flex: 1;
+        }
+      
+        
+        
+   
+      
+      button {
+            margin-top: 30px;
+            background-color: #060c21;
+            border-color: #00b4d8;
+            border-radius: 20px;
+            color: #00b4d8;
+            margin-bottom: 30px;
+            font-weight: bold;
+      }
+      
+      h1 {
+            color: #00b4d8;
+           
+      }
+      
+      button:hover {
+            color: white;
+            background-color: #00b4d8;
+            color: #060c21;
+      }
+      
+      .login {
+            margin-top: 30px;
+      }
+      
+      p {
+            color: grey;
+      }
+      
+      #message {
+            color: white;
+      }
+      
+      .link {
+            color:#00b4d8;
+      }
+      
+      .link:hover {
+            color: #00b4d8 ;
+            font-weight: bold;
+            
+      }
+
+      a {
+            color:#00b4d8 ;
+      }
+
+  }
+
+  @media only screen   
+  and (min-device-width : 768px)   
+  and (max-device-width : 1024px)  {
+        
+  }

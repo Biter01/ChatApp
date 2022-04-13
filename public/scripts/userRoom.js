@@ -9,12 +9,16 @@ const userInfo = {};
 //user.messages = [];
 
 
+window.scrollTo(0,document.body.scrollHeight);
+
+
 const getUserToken = ()=> {
     return localStorage.getItem('token');
 }
 
 
 (async () => {
+    
     //Userroom wird gesucht
     const url = window.location.href.split('/');
     //console.log(url);
@@ -57,7 +61,8 @@ function displayError(message) {
         body.innerHTML = '';
         errorDiv.textContent = message;
         errorDiv.style.fontWeight = 'bold';
-        errorDiv.style.color = 'red';
+        //errorDiv.style.color = 'red';
+        errorDiv.id="errorDiv";
         body.appendChild(errorDiv);
 }
 
@@ -73,6 +78,7 @@ function displayJoinMessage() {
 
 form.addEventListener('submit', (event)=> {
     event.preventDefault();
+    window.scrollTo(0,document.body.scrollHeight);
     if(input.value){
         /*
             Speicher gesendete Nachricht in Array
@@ -150,6 +156,7 @@ deleteBtn.addEventListener('click', async(event)=> {
 
 
 socket.on('send-message', (message)=> {
+    window.scrollTo(0,document.body.scrollHeight);
     // userRoom und userName sind hier die des Empfängers und nicht des Senders außer die Nachricht "message" 
     const messageObjRecipient = {...userInfo, message};
     const {userRoom, userName } = messageObjRecipient
@@ -161,4 +168,8 @@ socket.on('send-message', (message)=> {
    
 
 });
-      
+
+
+
+
+

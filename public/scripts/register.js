@@ -31,9 +31,9 @@ function displayMessage(result) {
     messageDiv.textContent = result.message;
     if(result.status === 'error') {
         console.log(result.message);
-        messageDiv.style.color = 'red';
+        //messageDiv.style.color = 'red';
     } else {
        console.log('Sucessful Registration');
-       messageDiv.style.color = 'green';
+      // messageDiv.style.color = 'green';
     }
 }

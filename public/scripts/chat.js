@@ -62,11 +62,12 @@ function checkPermissionState(status, message) {
     else {
         const body = document.body;
         const errorDiv = document.createElement('div');
+        errorDiv.id="errorDiv"
         body.innerHTML = '';
         console.log(errorDiv);
         errorDiv.textContent = message;
         errorDiv.style.fontWeight = 'bold';
-        errorDiv.style.color = 'red';
+        //errorDiv.style.color = 'red';
         body.appendChild(errorDiv);
         return false;
     }
