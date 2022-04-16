@@ -1,5 +1,4 @@
-body {
-   
+body { 
     margin: 0;
     padding: 0;
     display: flex;
@@ -8,8 +7,7 @@ body {
     min-height: 100vh;
     background: #060c21;
     overflow: hidden;
-     
-
+    font-family: sans-serif;
 }
 
 .box {
@@ -37,8 +35,6 @@ body {
     background: #00b4d8 ;   
     border-radius: 10px;
     z-index: -1;
-    
-   
 }
 
 .btn {
@@ -50,17 +46,20 @@ body {
 
 button {
     background-color: #060c21;
-    border-color: #060c21;
-    
+    border-color: #060c21;  
 }
+
+.logout:hover {
+    background-color: #00b4d8;
+    color: #060c21;
+}
+
 
 input {
     background-color: #060c21;
     color: white;
     border-color: #00b4d8;
-    
     margin-left: 10px;
-    
 }
 
 h1 {
@@ -95,15 +94,12 @@ h1 {
 
 
 #user {
-    
     margin-right: 200px;
-    
     list-style-type: none;
     color: purple;
     margin-bottom: 200px;
     position: relative;
-
-    
+    text-align: left;
 }
 
 #errorDiv {

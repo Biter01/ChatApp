@@ -11,8 +11,8 @@ const checkPermission = require('../middleware/checkPermission');
 router.use(express.json());
 
 
-router.post('/',checkPermission, (req, res)=> {
-    res.json({status: 'ok', message: `Wilkommen ${req.username}.`});
+router.post('/', checkPermission, (req, res)=> {
+    res.json({status: 'ok', message: `Welcome ${req.username}.`});
 });
 
 router.post('/search-user',checkPermission, async (req, res) => {
@@ -65,7 +65,7 @@ router.get('/get-history', async (req, res)=> {
 
 
 router.delete('/delete-history', async (req, res)=> {
-    console.log('tst');
+    //console.log('tst');
     //console.log(req.body);
     const {userName, userRoom} = req.body;
     //Findet den User und greift auf dessen  ChatRoom zu, wo dann die history gelöscht wird

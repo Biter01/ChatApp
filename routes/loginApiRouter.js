@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 //JWT Tokens
 const jwt = require('jsonwebtoken');
-const JWT_SECRET = 'sd*23jd3$h"w234!234l?ejk4rh';
+const JWT_SECRET = 'sa)skdlfj93!"845sadflasdf3438;';
 //bcrypt hash Passwords;
 const bcrypt = require('bcryptjs');
 //parses json body -> payload in order to read it -> req.body

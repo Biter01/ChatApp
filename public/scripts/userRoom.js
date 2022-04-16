@@ -4,18 +4,24 @@ const messages = document.getElementById('messages');
 const form = document.querySelector('form');
 const input = document.getElementById('input');
 const deleteBtn = document.getElementById('delete');
+const backBtn = document.getElementById('back');
+
+
+backBtn.addEventListener('click', ()=> {
+    window.location.href = `${window.location.origin}/chat.html`
+});
+
 
 const userInfo = {};
 //user.messages = [];
 
 
-window.scrollTo(0,document.body.scrollHeight);
+
 
 
 const getUserToken = ()=> {
     return localStorage.getItem('token');
 }
-
 
 (async () => {
     
@@ -42,7 +48,8 @@ const getUserToken = ()=> {
     //console.log(result);
     
     if(result.status === 'error') {
-        displayError(result.message);
+        window.location.replace(`${window.location.origin}/index.html`);
+        //displayError(result.message);
     } else if(result.status === 'ok') {
         //console.log(result.user);
         userInfo.userName = result.username;
@@ -55,16 +62,18 @@ const getUserToken = ()=> {
 
 })();
 
-function displayError(message) {
-        const body = document.body;
-        const errorDiv = document.createElement('div');
-        body.innerHTML = '';
-        errorDiv.textContent = message;
-        errorDiv.style.fontWeight = 'bold';
-        //errorDiv.style.color = 'red';
-        errorDiv.id="errorDiv";
-        body.appendChild(errorDiv);
-}
+// function displayError(message) {
+//         const body = document.body;
+//         const errorDiv = document.createElement('div');
+//         body.innerHTML = '';
+//         errorDiv.textContent = message;
+//         errorDiv.style.fontWeight = 'bold';
+//         errorDiv.style.margin = '0.5rem';
+//         body.style.display = 'block';
+//         //errorDiv.style.color = 'red';
+//         errorDiv.id="errorDiv";
+//         body.appendChild(errorDiv);
+// }
 
 
 function displayJoinMessage() {
@@ -100,9 +109,6 @@ form.addEventListener('submit', (event)=> {
     }
     
 });
-
-
-
 
 async function displayHistory() {
     const {userName, userRoom} = userInfo;
@@ -150,7 +156,7 @@ deleteBtn.addEventListener('click', async(event)=> {
     }).then((response)=>{ 
        return response.json();
     })
-    console.log(result);
+    //console.log(result);
     displayHistory();
 });
 

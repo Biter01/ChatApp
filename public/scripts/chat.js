@@ -7,16 +7,18 @@ const getUserToken = ()=> {
 (async () => {
     const result =  await fetch('/api/chat', {
         method: 'POST',
+        redirect: 'follow',
         headers: {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
             token: getUserToken()    
         })
+
     }).then((response)=>{ 
        return response.json();
     });
-    console.log(result);
+    //console.log(result);
     if(result.status === 'ok') {
 
     }
@@ -51,7 +53,7 @@ searchForm.addEventListener('submit', async (event)=> {
 
 function checkPermissionState(status, message) {
     const messageDiv = document.getElementById('message');
-    console.log(status, message);
+    //console.log(status, message);
     if(status === 'ok' && message !== undefined) {
         messageDiv.textContent = message;
         return true;
@@ -60,15 +62,18 @@ function checkPermissionState(status, message) {
         return true
     } 
     else {
-        const body = document.body;
-        const errorDiv = document.createElement('div');
-        errorDiv.id="errorDiv"
-        body.innerHTML = '';
-        console.log(errorDiv);
-        errorDiv.textContent = message;
-        errorDiv.style.fontWeight = 'bold';
-        //errorDiv.style.color = 'red';
-        body.appendChild(errorDiv);
+        // const body = document.body;
+        // const errorDiv = document.createElement('div');
+        // errorDiv.id="errorDiv"
+        // body.innerHTML = '';
+        // //console.log(errorDiv);
+        // errorDiv.textContent = message;
+        // errorDiv.style.fontWeight = 'bold';
+        // errorDiv.style.margin = '0.5rem';
+        // body.style.display = 'block';
+        // //errorDiv.style.color = 'red';
+        // body.appendChild(errorDiv);
+        window.location.replace(`${window.location.origin}/index.html`);
         return false;
     }
 }
@@ -92,7 +97,7 @@ const logoutBtn = document.getElementById('logout');
 
 logoutBtn.addEventListener('click', (event)=> {
    localStorage.removeItem('token');
-   window.location.replace("http://localhost:5000/index.html");
+   window.location.replace(`${window.location.origin}/index.html`);
 });
 
 

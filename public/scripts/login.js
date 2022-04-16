@@ -19,15 +19,15 @@ form.addEventListener('submit', async (event)=> {
         return response.json()
     });
 
-    console.log(result);
+    //console.log(result);
     
     if(result.status === 'ok') {
-        console.log('Got the token ', result.data);
+        //console.log('Got the token ', result.data);
         localStorage.setItem('token', result.data);
-        window.location.href='http://localhost:5000/chat.html';
+        window.location.href=`${window.location.origin}/chat.html`;
     } else {
         displayErrorMessage(result);
-        console.log(result.message);
+        //console.log(result.message);
     }
 });
 
@@ -36,14 +36,14 @@ function displayErrorMessage(result) {
     const messageDiv = document.getElementById('message');
     messageDiv.textContent = result.message;
     if(result.status === 'error') {
-        console.log(result.message);
+        //console.log(result.message);
         messageDiv.style.color = 'red';
     }
 }
 
 
-window.addEventListener('load', ()=> {
-    console.log('seite geladen');
+// window.addEventListener('load', ()=> {
+//     console.log('seite geladen');
     
-});
+// });
 

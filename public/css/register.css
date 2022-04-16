@@ -1,5 +1,4 @@
 body {
-   
       margin: 0;
       padding: 0;
       display: flex;
@@ -8,10 +7,8 @@ body {
       min-height: 100vh;
       background: #060c21;
       overflow: hidden;
-       
-
+      font-family: sans-serif;
 }
-
 
 .box {
       position: relative;
@@ -23,9 +20,7 @@ body {
        background: #060c21;
        padding: auto;
        text-align: center;
-      
-       border-radius: 10px;
-      
+       border-radius: 10px; 
 }
 
 .box:before {
@@ -36,7 +31,6 @@ body {
       left: -2px;
       bottom: -2px;
       background: #00b4d8 ;
-     
       border-radius: 10px;
       z-index: -3;
       
@@ -64,10 +58,11 @@ button {
       margin-top: 30px;
       background-color: #060c21;
       border-color: #00b4d8;
-      border-radius: 20px;
+      border-radius: 7px;
       color: #00b4d8;
       margin-bottom: 30px;
       font-weight: bold;
+      padding: 0.3rem;
 }
 
 h1 {
@@ -76,7 +71,6 @@ h1 {
 }
 
 button:hover {
-      color: white;
       background-color: #00b4d8;
       color: #060c21;
 }
@@ -125,7 +119,6 @@ p {
             background: #060c21;
             overflow: hidden;
              
-      
       }
       
       
@@ -152,7 +145,6 @@ p {
             left: -2px;
             bottom: -2px;
             background: #00b4d8 ;
-           
             border-radius: 10px;
             z-index: -3;
             
@@ -163,7 +155,7 @@ p {
               background-color: #060c21;
               border-color: #48cae4;
               border-radius: 20px;
-             padding-left: 2px;
+              padding-left: 2px;
               padding-top: 1px;
               padding-bottom: 1px;
               color: #caf0f8;
@@ -182,10 +174,11 @@ p {
             margin-top: 30px;
             background-color: #060c21;
             border-color: #00b4d8;
-            border-radius: 20px;
+            border-radius: 7px;
             color: #00b4d8;
             margin-bottom: 30px;
             font-weight: bold;
+            padding: 0.3rem;
       }
       
       h1 {
@@ -234,8 +227,7 @@ p {
             align-items: center;
             min-height: 100vh;
             background: #060c21;
-            overflow: hidden;
-             
+            overflow: hidden; 
       
       }
       
@@ -250,9 +242,7 @@ p {
              background: #060c21;
              padding: auto;
              text-align: center;
-            
              border-radius: 10px;
-            
       }
       
       .box:before {
@@ -263,18 +253,16 @@ p {
             left: -2px;
             bottom: -2px;
             background: #00b4d8 ;
-           
             border-radius: 10px;
             z-index: -3;
             
-           
         }
       
         input {
               background-color: #060c21;
               border-color: #48cae4;
               border-radius: 20px;
-             padding-left: 2px;
+              padding-left: 2px;
               padding-top: 1px;
               padding-bottom: 1px;
               color: #caf0f8;
@@ -290,10 +278,11 @@ p {
             margin-top: 30px;
             background-color: #060c21;
             border-color: #00b4d8;
-            border-radius: 20px;
+            border-radius: 7px;
             color: #00b4d8;
             margin-bottom: 30px;
             font-weight: bold;
+            padding: 0.3rem;
       }
       
       h1 {

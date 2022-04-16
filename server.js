@@ -15,8 +15,10 @@ const io = new Server(server);
 const registerApiRouter = require('./routes/registerApiRouter');
 const loginApiRouter = require('./routes/loginApiRouter');
 const chatApiRouter = require('./routes/chatApiRouter');
+const dbURI = 'mongodb://localhost:27017/chat-app-db';
+const port = process.env.PORT || 5000;
 
-mongoose.connect('mongodb://localhost:27017/chat-app-db', {
+mongoose.connect(dbURI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 });
@@ -59,7 +61,7 @@ io.on('connection', (socket)=> {
 
          if(!chatRoomRecipient) {
             //Defeniere ein neues Sub document, den es exestiert für diesen User keines mit dem roomname userName!!!
-            console.log('newRoom-Recipient');
+            //console.log('newRoom-Recipient');
             userRecipient.chatrooms.push({roomname: userName, history: []});
             const updatedUser = await userRecipient.save();
             //console.log(updatedUser);
@@ -119,6 +121,6 @@ io.on('connection', (socket)=> {
 
 });
 
-server.listen(5000, ()=> {
+server.listen(port, ()=> {
     console.log('Server Listening Port 5000');
 });
