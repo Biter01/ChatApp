@@ -4,9 +4,9 @@
 
 <ul>
   <li>Register and Login in the Application</li> 
-  <li>Saving Chat histories and Accounts in MongoDB</li>
-  <li>>Message other Accounts by Searching</li>
-  <li>>Stay logged in until time runs up</li>
+  <li>Save Chat histories and Accounts in MongoDB</li>
+  <li>Message other Accounts by Searching</li>
+  <li>Stay logged in until time runs up</li>
 </ul>
  
  <h3>Dependencies:</h3>
