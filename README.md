@@ -15,7 +15,7 @@
   <li>NodeJS with ExpressJS</li> 
   <li>plain JS HTML CSS</li>
   <li>MongoDB</li>
-  <li>WebSockets for realtime MEssage excahnge</li>
+  <li>WebSockets for realtime Message excahnge</li>
   <li>JWT for Authorisation</li>
   <li>Hash libary to hash passwords in DB </li>
 </ul>
